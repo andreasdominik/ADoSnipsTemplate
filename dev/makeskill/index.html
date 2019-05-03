@@ -13,7 +13,7 @@ git status
 git commit -m &#39;initial commit&#39;
 git status
 git remote set-url origin git@github.com:andreasdominik/mySkill.jl.git
-git push origin master</code></pre><h2><a class="nav-anchor" id="Files-in-the-template-1" href="#Files-in-the-template-1">Files in the template</a></h2><p>The template consists of several files, but only some of them need to be adapted for a new skill.</p><table><tr><th style="text-align: right">filename</th><th style="text-align: right">comment</th><th style="text-align: right">needs to be adapted</th></tr><tr><td style="text-align: right"><code>api.jl</code></td><td style="text-align: right">source code of Julia low-level API for a controlled device</td><td style="text-align: right">optional</td></tr><tr><td style="text-align: right"><code>callback.jl</code></td><td style="text-align: right">holds the callback, used in the background</td><td style="text-align: right">no</td></tr><tr><td style="text-align: right"><code>config.jl</code></td><td style="text-align: right">global definitions for a skill</td><td style="text-align: right">yes</td></tr><tr><td style="text-align: right"><code>languages.jl</code></td><td style="text-align: right">text fragments for multi-language support</td><td style="text-align: right">optional</td></tr><tr><td style="text-align: right"><code>skill-actions.jl</code></td><td style="text-align: right">functions to be executed, if an intent is recognised</td><td style="text-align: right">yes</td></tr><tr><td style="text-align: right"><code>Skill.jl</code></td><td style="text-align: right">the julia module for the skill</td><td style="text-align: right">no</td></tr></table><p>In a minimum-setup only 2 things need to be adapted for a new skill:</p><ul><li>the action-functions which respond to an intent (the <em>direct</em> action, no callback) must be definded and implemented (<code>skill-actions.jl</code>)</li><li>the action-functions must be connected with the cporresponding intent names (<code>config.jl</code>).</li></ul><p>Optional, more fine-grained software engineering is possible by</p><ul><li>separating the user-interaction from the API of controlled devices (latter will go to <code>api.jl</code>)</li><li>adding multi-language support, by specifying phrases in different languages (<code>languages.jl</code>) and by using different intents, depending on the language defined in <code>config.ini</code>.</li></ul><h2><a class="nav-anchor" id="Example-with-low-level-API-1" href="#Example-with-low-level-API-1">Example with low-level API</a></h2><p>This tutorial shows how a skill to control an external device can be derived from the template.</p><p>The idea is to control an Amazon fire stick with a minimum set of commands <code>on, off, left, play</code>. More commands can be implement easily by following the same way.</p><p>Switching on and off is implemented, based on the common on-off-intent included in the framework.</p><h3><a class="nav-anchor" id="The-Amazon-fire-low-level-API-1" href="#The-Amazon-fire-low-level-API-1">The Amazon fire low-level API</a></h3><p>The low-level API which sends commands to the Amazon fire is borrowed from Matt&#39;s ADBee project (<code>git@github.com:mattgyver83/adbee.git</code>) that provides a shell-script to send commands to the Amazon device.</p><p>Although Python programmes usually find packages for every task, it is a very good idea to implement the lowest level af any device-control API as a shell script:</p><ul><li><p>easy to write</p></li><li><p>fast and without any overhead</p></li><li><p>easy to test, you can test the API by just running the script from commandline as <code>controlFire ON</code> or <code>controlFire OFF</code> and see what happens.</p><p>The simplified ADBee-script is:</p></li></ul><pre><code class="language-sh">#!/bin/bash -xv
+git push origin master</code></pre><h2><a class="nav-anchor" id="Files-in-the-template-1" href="#Files-in-the-template-1">Files in the template</a></h2><p>The template consists of several files, but only some of them need to be adapted for a new skill.</p><table><tr><th style="text-align: right">filename</th><th style="text-align: right">comment</th><th style="text-align: right">needs to be adapted</th></tr><tr><td style="text-align: right"><code>api.jl</code></td><td style="text-align: right">source code of Julia low-level API for a controlled device</td><td style="text-align: right">optional</td></tr><tr><td style="text-align: right"><code>callback.jl</code></td><td style="text-align: right">holds the callback, used in the background</td><td style="text-align: right">no</td></tr><tr><td style="text-align: right"><code>config.jl</code></td><td style="text-align: right">global definitions for a skill</td><td style="text-align: right">yes</td></tr><tr><td style="text-align: right"><code>languages.jl</code></td><td style="text-align: right">text fragments for multi-language support</td><td style="text-align: right">optional</td></tr><tr><td style="text-align: right"><code>skill-actions.jl</code></td><td style="text-align: right">functions to be executed, if an intent is recognised</td><td style="text-align: right">yes</td></tr><tr><td style="text-align: right"><code>Skill.jl</code></td><td style="text-align: right">the julia module for the skill</td><td style="text-align: right">no</td></tr></table><p>In a minimum-setup only 2 things need to be adapted for a new skill:</p><ul><li>the action-functions which respond to an intent (the <em>direct</em> action, no callback) must be definded and implemented (<code>skill-actions.jl</code>)</li><li>the action-functions must be connected with the cporresponding intent names (<code>config.jl</code>).</li></ul><p>Optional, more fine-grained software engineering is possible by</p><ul><li>separating the user-interaction from the API of controlled devices (latter will go to <code>api.jl</code>)</li><li>adding multi-language support, by specifying phrases in different languages (<code>languages.jl</code>) and by using different intents, depending on the language defined in <code>config.ini</code>.</li></ul><h2><a class="nav-anchor" id="Example-with-low-level-API-1" href="#Example-with-low-level-API-1">Example with low-level API</a></h2><p>This tutorial shows how a skill to control an external device can be derived from the template.</p><p>The idea is to control an Amazon fire stick with a minimum set of commands <code>on, off, left, play</code>. More commands can be implement easily the same way.</p><p>Switching on and off is implemented, based on the common on-off-intent included in the framework.</p><h3><a class="nav-anchor" id="The-Amazon-fire-low-level-API-1" href="#The-Amazon-fire-low-level-API-1">The Amazon fire low-level API</a></h3><p>The low-level API which sends commands to the Amazon fire is borrowed from Matt&#39;s ADBee project (<code>git@github.com:mattgyver83/adbee.git</code>) that provides a shell-script to send commands to the Amazon device.</p><p>Although Python programmes usually find packages for every task, it is a very good idea to implement the lowest level af any device-control API as a shell script:</p><ul><li><p>easy to write</p></li><li><p>fast and without any overhead</p></li><li><p>easy to test, you can test the API by just running the script from commandline as <code>controlFire ON</code> or <code>controlFire OFF</code> and see what happens.</p><p>The simplified ADBee-script is:</p></li></ul><pre><code class="language-sh">#!/bin/bash -xv
 # control fireTv via adb
 
 COMMANDS=$@
@@ -64,53 +64,49 @@ end
 
 function amazonPause()
     adbCmds(&quot;pause&quot;)
-end</code></pre><h3><a class="nav-anchor" id="The-action-functions-1" href="#The-action-functions-1">The action-functions</a></h3><p>This function are executed by the framework if an intent is recognised. The functions are defined in the file <code>skill-actions.jl</code>. On/off is handled via the common on/off-intent, all other actions need a specific intent, that must be set up in the Snips console.</p><pre><code class="language-Julia">&quot;&quot;&quot;
-function powerOn(topic, payload)
+end</code></pre><h3><a class="nav-anchor" id="The-action-function-for-on/off-1" href="#The-action-function-for-on/off-1">The action-function for on/off</a></h3><p>This function are executed by the framework if an intent is recognised. The functions are defined in the file <code>skill-actions.jl</code>. On/off is handled via the common on/off-intent, all other actions need a specific intent, that must be set up in the Snips console.</p><pre><code class="language-Julia">&quot;&quot;&quot;
+function powerOnOff(topic, payload)
 
     Power on.
 &quot;&quot;&quot;
-function powerOn(topic, payload)
+function powerOnOff(topic, payload)
 
-    Snips.publishEndSession(&quot;I wake up the Amazon Fire Stick.&quot;)
-    amazonON()
-    return true
-end
+    if isOnOffMatched(payload, DEVICE_NAME) == :on
+        Snips.publishEndSession(&quot;I wake up the Amazon Fire Stick.&quot;)
+        amazonON()
+        return true
 
+    elseif isOnOffMatched(payload, DEVICE_NAME) == :off
+        Snips.publishEndSession(&quot;I send the Amazon Fire Stick to sleep.&quot;)
+        amazonOFF()
+        return true
 
+    else
+        return false
+    end
+end</code></pre><h3><a class="nav-anchor" id="The-action-function-for-all-other-commands-1" href="#The-action-function-for-all-other-commands-1">The action-function for all other commands</a></h3><p>All other commands must be handled by an intent that you must create in the Snips console. Let&#39;s assume the intent has the name <code>ControlAmazon</code> and delivers the command in the slot <code>Command</code>. The slot should know all known commands with synonyms.</p><p>To handle this, a second action-function has to be defined in the file <code>skill-actions.jl</code>:</p><pre><code class="language-Julia">&quot;&quot;&quot;
+function commands(topic, payload)
+
+    Send commands to Amamzon device.
 &quot;&quot;&quot;
-function powerOff(topic, payload)
+function commands(topic, payload)
 
-    Power off.
-&quot;&quot;&quot;
-function powerOff(topic, payload)
+    if Snips.isInSlot(payload, SLOT_NAME, &quot;play&quot;)
+        Snips.publishEndSession(&quot;I play the current selection!&quot;)
+        amazonPlay()
+        return true
 
-    Snips.publishEndSession(&quot;I send the Amazon Fire Stick to sleep.&quot;)
-    amazonOFF()
-    return true
-end
+    elseif Snips.isInSlot(payload, SLOT_NAME, &quot;pause&quot;)
+        Snips.publishEndSession(&quot;I pause the movie.&quot;)
+        amazonPause()
+        return true
 
+    else
+        Snips.publishEndSession(&quot;I cannot respond!&quot;)
+        return true
+    end
+end</code></pre><h3><a class="nav-anchor" id="Tying-everything-together-1" href="#Tying-everything-together-1">Tying everything together</a></h3><p>The last step is to tell the skill the names of intents to listen and the names of the slots to extract values from. Both is defined in the file <code>config.jl</code>:</p><ul><li>The slot names are simply defined as global constants (they are global within the Module Skill).</li><li>Intents and respective functions are stored in a Dictionary with the intent names as keys and the functions as values. (Please keep in mind, that intents are language-specific!)</li></ul><pre><code class="language-Julia">const SLOT_NAME = &quot;Command&quot;
 
-&quot;&quot;&quot;
-function play(topic, payload)
-
-    Send PLAY to Amamzon device.
-&quot;&quot;&quot;
-function play(topic, payload)
-
-    Snips.publishEndSession(&quot;I play the current selection!&quot;)
-    amazonPlay()
-    return true
-end
-
-
-&quot;&quot;&quot;
-function pause(topic, payload)
-
-    Pause the current movie.
-&quot;&quot;&quot;
-function pause(topic, payload)
-
-    Snips.publishEndSession(&quot;I pause the movie.&quot;)
-    amazonPause()
-    return true
-end</code></pre><h3><a class="nav-anchor" id="Tying-everything-together-1" href="#Tying-everything-together-1">Tying everything together</a></h3><p>The last step is to tell the framework which function must be executed if Snips identifies an intent. This is configured in the file <code>config.jl</code>. The last lines of the file must be changed like:</p><p>```Julia INTENT<em>ACTIONS</em>DE = Dict{String, Function}() INTENT<em>ACTIONS</em>DE[&quot;&quot;] = templateAction</p><footer><hr/><a class="previous" href="../snipsHermesQnD/"><span class="direction">Previous</span><span class="title">SnipsHermesQnD</span></a><a class="next" href="../api/api/"><span class="direction">Next</span><span class="title">API Documentation</span></a></footer></article></body></html>
+INTENT_ACTIONS = Dict{String, Function}()
+INTENT_ACTIONS[&quot;AdoSnipsOnOffEN&quot;] = powerOnOff
+INTENT_ACTIONS[&quot;ControlAmazon&quot;] = commands</code></pre><footer><hr/><a class="previous" href="../snipsHermesQnD/"><span class="direction">Previous</span><span class="title">SnipsHermesQnD</span></a><a class="next" href="../api/api/"><span class="direction">Next</span><span class="title">API Documentation</span></a></footer></article></body></html>
